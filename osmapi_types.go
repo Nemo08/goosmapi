@@ -1,4 +1,4 @@
-package goosmapi0.6
+package goosmapi
 
 import (
 	"encoding/xml"
