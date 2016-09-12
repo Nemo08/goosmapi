@@ -1,1 +1,1 @@
-# goosmapi0.6
+# Go OpenStreetMap API v0.6 xml structures
