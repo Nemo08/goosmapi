@@ -7,15 +7,15 @@ import (
 
 //In this format _list_ of changesets return from osm.org
 // Get from http://api.openstreetmap.org/api/0.6/changesets?
-type OSMAPI06ChangesetsResponse struct {
-	XMLName    xml.Name    `xml:"osm"`
-	Changesets []Changeset `xml:"changeset"`
+type ChangesetList struct {
+	XMLName    xml.Name        `xml:"osm"`
+	Changesets []ChangesetInfo `xml:"changeset"`
 	AttributionBasicInfo
 }
 
 // Part of _list_ OSM changesets response structure: changesets
 // Get from http://www.openstreetmap.org/api/0.6/changeset/_changeset_id_/download
-type Changeset struct {
+type ChangesetInfo struct {
 	ChangesetId   int64      `xml:"id,attr"`
 	CreatedAt     *time.Time `xml:"created_at,attr"`
 	ClosedAt      *time.Time `xml:"closed_at,attr"`
@@ -45,26 +45,26 @@ type BoundsBox struct {
 
 // Osmchange.xml, _one_ changeset information
 // Get from http://www.openstreetmap.org/api/0.6/changeset/_changeset_ID_/download
-type OsmChangeXML struct {
-	XMLName           xml.Name      `xml:"osmChange"`
-	CreatedNodes      []OsmNode     `xml:"create>node"`
-	CreatedWays       []OsmWay      `xml:"create>way"`
-	CreatedRelations  []OsmRelation `xml:"create>relation"`
-	ModifiedNodes     []OsmNode     `xml:"modify>node"`
-	ModifiedWays      []OsmWay      `xml:"modify>way"`
-	ModifiedRelations []OsmRelation `xml:"modify>relation"`
-	DeletedNodes      []OsmNode     `xml:"delete>node"`
-	DeletedWays       []OsmWay      `xml:"delete>way"`
-	DeletedRelations  []OsmRelation `xml:"delete>relation"`
+type Changeset struct {
+	XMLName           xml.Name   `xml:"osmChange"`
+	CreatedNodes      []Node     `xml:"create>node"`
+	CreatedWays       []Way      `xml:"create>way"`
+	CreatedRelations  []Relation `xml:"create>relation"`
+	ModifiedNodes     []Node     `xml:"modify>node"`
+	ModifiedWays      []Way      `xml:"modify>way"`
+	ModifiedRelations []Relation `xml:"modify>relation"`
+	DeletedNodes      []Node     `xml:"delete>node"`
+	DeletedWays       []Way      `xml:"delete>way"`
+	DeletedRelations  []Relation `xml:"delete>relation"`
 }
 
 // History of _one_ node, way or relation
 // Get from http://www.openstreetmap.org/api/0.6/[node|way|relation]/_id_/history
-type OsmHistoryXML struct {
-	XMLName   xml.Name      `xml:"osm"`
-	Nodes     []OsmNode     `xml:"node"`
-	Ways      []OsmWay      `xml:"way"`
-	Relations []OsmRelation `xml:"relation"`
+type History struct {
+	XMLName   xml.Name   `xml:"osm"`
+	Nodes     []Node     `xml:"node"`
+	Ways      []Way      `xml:"way"`
+	Relations []Relation `xml:"relation"`
 	AttributionBasicInfo
 }
 
@@ -94,7 +94,7 @@ type UserBasicInfo struct {
 
 // Part of OSM changeset response structure (osmchange.xml): node
 // Or taken from http://www.openstreetmap.org/api/0.6/node/_node_id_
-type OsmNode struct {
+type Node struct {
 	XMLName xml.Name `xml:"node"`
 	Lat     float64  `xml:"lat,attr"`
 	Lon     float64  `xml:"lon,attr"`
@@ -105,7 +105,7 @@ type OsmNode struct {
 
 // Part of OSM changeset response structure (osmchange.xml): way
 // Or taken from http://www.openstreetmap.org/api/0.6/way/_way_id_
-type OsmWay struct {
+type Way struct {
 	XMLName  xml.Name  `xml:"way"`
 	NodeRefs []NodeRef `xml:"nd"`
 	Tags     []Tag     `xml:"tag"`
@@ -115,16 +115,16 @@ type OsmWay struct {
 
 //Part of OSM changeset response structure (osmchange.xml): relation
 // Or taken from http://www.openstreetmap.org/api/0.6/relation/_relation_id_
-type OsmRelation struct {
-	XMLName xml.Name            `xml:"relation"`
-	Members []OsmRelationMember `xml:"member"`
-	Tags    []Tag               `xml:"tag"`
+type Relation struct {
+	XMLName xml.Name         `xml:"relation"`
+	Members []RelationMember `xml:"member"`
+	Tags    []Tag            `xml:"tag"`
 	ElementBasicInfo
 	UserBasicInfo
 }
 
 //Part of OSM changeset response structure (osmchange.xml): relation member, reference by id
-type OsmRelationMember struct {
+type RelationMember struct {
 	XMLName xml.Name `xml:"member"`
 	Type    string   `xml:"type,attr"`
 	Ref     int64    `xml:"ref,attr"`
